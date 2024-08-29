@@ -52,7 +52,9 @@ pipeline {
         always {
             mail bcc: '', body: 'Pipeline execution status: ${currentBuild.currentResult}\nLogs attached.',
                  subject: "Jenkins Pipeline: ${currentBuild.currentResult}",
-                 to: 'psahmadtc@gmail.com'
+                 to: 'psahmadtc@gmail.com',
+                // attachmentsPattern: 'test-*.log',
+                attachLog: true
         }
     }
 }
