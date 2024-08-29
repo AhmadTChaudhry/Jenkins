@@ -64,7 +64,7 @@ pipeline {
           )
         }
         always {
-            mail bcc: '', body: 'Pipeline execution status: '${currentBuild.currentResult}\nLogs attached. ,
+            mail bcc: '', body: 'Pipeline execution status: ${currentBuild.currentResult} \nLogs attached.' ,
                  subject: "Jenkins Pipeline Update",
                  to: 'psahmadtc@gmail.com'
         }
