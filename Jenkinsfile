@@ -12,7 +12,6 @@ pipeline {
             }
             post {
                 success {
-                    archiveArtifacts artifacts: 'test-*.log', allowEmptyArchive: true
                     emailext(
                         to: 'psahmadtc@gmail.com',
                         subject: 'Unit and Integration Tests Passed',
