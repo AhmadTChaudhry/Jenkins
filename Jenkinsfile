@@ -1,47 +1,81 @@
 pipeline {
     agent any
-    environment {
-        EMAIL_RECIPIENT = "psahmadtc@gmail.com"
-        }
     stages {
         stage('Build') {
             steps {
-                echo 'Building the code...'
+                echo 'Building the code using Maven...'
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Running unit and integration tests...'
+                echo 'Running unit and integration tests using Selenium...'
+            }
+            post {
+                success {
+                    archiveArtifacts artifacts: 'test-*.log', allowEmptyArchive: true
+                    emailext(
+                        to: 'psahmadtc@gmail.com',
+                        subject: 'Unit and Integration Tests Passed',
+                        body: 'Unit and integration tests passed successfully.',
+                        attachmentsPattern: 'test-*.log',
+                        attachLog: true
+                    )
+                }
+                failure {
+                    archiveArtifacts artifacts: 'test-*.log', allowEmptyArchive: true
+                    emailext(
+                        to: 'psahmadtc@gmail.com',
+                        subject: 'Unit and Integration Tests Failed',
+                        body: 'Unit and integration tests failed. Details in Logs.',
+                        attachmentsPattern: 'test-*.log',
+                        attachLog: true
+                    )
+                }
             }
         }
         stage('Code Analysis') {
             steps {
-                echo 'Analyzing the code...'
+                echo 'Analyzing the code using SonarQube...'
             }
         }
         stage('Security Scan') {
             steps {
-                echo 'Performing security scan...'
+                echo 'Performing security scan using OWASP Dependency-Check...'
             }
-        }
+            post {
+                success {
+                    archiveArtifacts artifacts: 'security-*.log', allowEmptyArchive: true
+                    emailext(
+                        to: 'psahmadtc@gmail.com',
+                        subject: 'Security Scan Passed',
+                        body: 'Security scan passed successfully.',
+                        attachmentsPattern: 'security-*.log',
+                        attachLog: true
+                    )
+                }
+                failure {
+                    archiveArtifacts artifacts: 'security-*.log', allowEmptyArchive: true
+                    emailext(
+                        to: 'psahmadtc@gmail.com',
+                        subject: 'Security Scan Failed',
+                        body: 'Security scan failed. Details in Logs.',
+                        attachmentsPattern: 'security-*.log',
+                        attachLog: true
+                    )
+                }
         stage('Deploy to Staging') {
             steps {
-                echo 'Deploying to staging environment...'
+                echo 'Deploying to staging environment using AWS...'
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                echo 'Running integration tests on staging...'
+                echo 'Running integration tests on staging environment...'
             }
         }
         stage('Deploy to Production') {
             steps {
-                echo 'Deploying to production environment...'
-            }
-        }
-        stage('Complete') {
-            steps {
-                echo 'Completed!'
+                echo 'Deploying to production environment using AWS...'
             }
         }
     }
@@ -51,18 +85,6 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed!'
-        }
-        always {
-            //mail bcc: '', body: 'Pipeline execution status: ${currentBuild.currentResult} \nLogs attached.' ,
-              //   subject: "Jenkins Pipeline Update",
-                // to: 'psahmadtc@gmail.com'
-            emailext(
-            to: "${EMAIL_RECIPIENT}",
-            subject: "Unit and Integration Tests Failed",
-            body: "The Unit and Integration Tests Have Failed. Please check the attached logs for details.",
-          //  attachmentsPattern: 'test-*.log',
-            attachLog: true
-          )
         }
     }
 }
