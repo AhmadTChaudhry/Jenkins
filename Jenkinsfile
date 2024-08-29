@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    envoirnment {
+        EMAIL_RECIPIENT = "psahmadtc@gmail.com"
+        }
     stages {
         stage('Build') {
             steps {
@@ -45,31 +48,17 @@ pipeline {
     post {
         success {
             echo 'Pipeline completed successfully!'
-            emailext(
-            to: 'psahmadtc@gmail.com',
-            subject: "Unit and Integration Tests Success",
-            body: "The Unit and Integration Tests Have Succeeded. Please check the attached logs for details.",
-          //  attachmentsPattern: 'test-*.log',
-            attachLog: true
-          )
         }
         failure {
             echo 'Pipeline failed!'
-            emailext(
-            to: 'psahmadtc@gmail.com',
-            subject: "Unit and Integration Tests Failed",
-            body: "The Unit and Integration Tests Have Failed. Please check the attached logs for details.",
-          //  attachmentsPattern: 'test-*.log',
-            attachLog: true
-          )
         }
         always {
             //mail bcc: '', body: 'Pipeline execution status: ${currentBuild.currentResult} \nLogs attached.' ,
               //   subject: "Jenkins Pipeline Update",
                 // to: 'psahmadtc@gmail.com'
             emailext(
-            to: "psahmadtc@gmail.com",
-            subject: "Unit and Integation Tests Failed",
+            to: "${EMAIL_RECIPIENT}",
+            subject: "Unit and Integration Tests Failed",
             body: "The Unit and Integration Tests Have Failed. Please check the attached logs for details.",
           //  attachmentsPattern: 'test-*.log',
             attachLog: true
