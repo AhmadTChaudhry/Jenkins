@@ -36,6 +36,11 @@ pipeline {
                 echo 'Deploying to production environment...'
             }
         }
+        stage('Complete') {
+            steps {
+                echo 'Completed!'
+            }
+        }
     }
     post {
         success {
