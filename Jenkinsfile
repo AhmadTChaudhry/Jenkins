@@ -68,8 +68,8 @@ pipeline {
               //   subject: "Jenkins Pipeline Update",
                 // to: 'psahmadtc@gmail.com'
             emailext(
-            to: 'psahmadtc@gmail.com',
-            subject: "Unit and Integration Tests Failed",
+            to: "psahmadtc@gmail.com",
+            subject: "Unit and Integation Tests Failed",
             body: "The Unit and Integration Tests Have Failed. Please check the attached logs for details.",
           //  attachmentsPattern: 'test-*.log',
             attachLog: true
