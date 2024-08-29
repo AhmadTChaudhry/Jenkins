@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    envoirnment {
+    environment {
         EMAIL_RECIPIENT = "psahmadtc@gmail.com"
         }
     stages {
