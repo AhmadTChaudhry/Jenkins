@@ -64,9 +64,16 @@ pipeline {
           )
         }
         always {
-            mail bcc: '', body: 'Pipeline execution status: ${currentBuild.currentResult} \nLogs attached.' ,
-                 subject: "Jenkins Pipeline Update",
-                 to: 'psahmadtc@gmail.com'
+            //mail bcc: '', body: 'Pipeline execution status: ${currentBuild.currentResult} \nLogs attached.' ,
+              //   subject: "Jenkins Pipeline Update",
+                // to: 'psahmadtc@gmail.com'
+            emailext(
+            to: 'psahmadtc@gmail.com',
+            subject: "Unit and Integration Tests Failed",
+            body: "The Unit and Integration Tests Have Failed. Please check the attached logs for details.",
+          //  attachmentsPattern: 'test-*.log',
+            attachLog: true
+          )
         }
     }
 }
