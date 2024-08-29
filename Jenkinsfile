@@ -63,6 +63,8 @@ pipeline {
                         attachLog: true
                     )
                 }
+            }
+        }
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to staging environment using AWS...'
